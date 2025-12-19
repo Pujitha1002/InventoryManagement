@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { KidsComponent } from './kids.component';
+
+describe('Kids', () => {
+  let component: KidsComponent;
+  let fixture: ComponentFixture<KidsComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [KidsComponent]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(KidsComponent);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

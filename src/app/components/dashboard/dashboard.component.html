@@ -1,0 +1,36 @@
+
+<div class="hamburger" (click)="toggleSidebar()">
+  ☰
+</div>
+
+<aside class="sidebar" [class.open]="sidebarOpen">
+  <p class="greet">Hi {{ username }}</p>
+
+  <ul>
+    <li>Categories</li>
+    <li>Women</li>
+    <li>Men</li>
+    <li>Kids</li>
+    <li>Purchase</li>
+    <li>Sale</li>
+    <li>Stock</li>
+  </ul>
+
+  <button class="logout">Logout</button>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main" [class.shrink]="sidebarOpen">
+  <h2>Categories</h2>
+
+  <div class="cards">
+    <!-- your category cards stay EXACTLY same -->
+  </div>
+</main>
+
+
+
+
+
+
+

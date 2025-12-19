@@ -1,0 +1,47 @@
+<div class="page-container">
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Accessories</h2>
+
+    <button class="sidebar-item"
+      [class.active]="selectedSidebarItem === null"
+      (click)="selectSidebarItem(null)">All</button>
+
+    <button *ngFor="let item of sidebarItems"
+      class="sidebar-item"
+      [class.active]="selectedSidebarItem === item"
+      (click)="selectSidebarItem(item)">
+      {{ item }}
+    </button>
+  </aside>
+
+  <main class="content">
+    <h1 class="page-title">Accessories</h1>
+
+    <div class="cards-grid">
+      <div class="product-card" *ngFor="let product of filteredProducts">
+        <div class="low-stock" *ngIf="product.isLowStock">Low stock</div>
+
+        <div class="image-box">Image</div>
+
+        <div class="info">
+          <div class="name">{{ product.name }}</div>
+
+          <div class="size-row">
+            <span class="label">Size:</span>
+            <div class="size-options">
+              <div class="size-circle" [class.selected]="isSizeSelected(product,'S')">S</div>
+              <div class="size-circle" [class.selected]="isSizeSelected(product,'M')">M</div>
+              <div class="size-circle" [class.selected]="isSizeSelected(product,'L')">L</div>
+            </div>
+          </div>
+
+          <div class="price-row">
+            <span class="label">Price:</span>
+            <span class="price">₹ {{ product.price }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+

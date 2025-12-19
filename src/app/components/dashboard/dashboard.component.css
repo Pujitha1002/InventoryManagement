@@ -1,0 +1,66 @@
+
+.hamburger {
+  position: fixed;
+  top: 22px;
+  left: 22px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
+  color: #222;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: #f4f3f1;
+  padding: 80px 20px 20px;
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+  z-index: 1000;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 14px 0;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+}
+
+.greet {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.main {
+  margin-left: 0;
+  padding: 80px 40px;
+  transition: all 0.35s ease;
+}
+
+.main.shrink {
+  margin-left: 240px;
+  transform: scale(0.95);
+  border-radius: 20px;
+  background: #fafafa;
+}
+
+
+
+
+
+
+
+
