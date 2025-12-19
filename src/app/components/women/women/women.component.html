@@ -4,15 +4,11 @@
   <aside class="sidebar">
     <h2 class="sidebar-title">Women</h2>
 
-    <button class="sidebar-item"
-      [class.active]="selectedSidebarItem === null"
-      (click)="selectSidebarItem(null)">
+    <button class="sidebar-item" [class.active]="selectedSidebarItem === null" (click)="selectSidebarItem(null)">
       All
     </button>
 
-    <button *ngFor="let item of sidebarItems"
-      class="sidebar-item"
-      [class.active]="selectedSidebarItem === item"
+    <button *ngFor="let item of sidebarItems" class="sidebar-item" [class.active]="selectedSidebarItem === item"
       (click)="selectSidebarItem(item)">
       {{ item }}
     </button>
