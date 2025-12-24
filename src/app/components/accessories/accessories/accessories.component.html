@@ -1,6 +1,11 @@
+<!-- TOPBAR -->
+<div class="topbar">
+  <button class="hamburger-btn" (click)="toggleMenu($event)">☰</button>
+  <h1 class="top-title">Accessories</h1>
+</div>
+
 <div class="page-container">
-  <aside class="sidebar">
-    <h2 class="sidebar-title">{{ title }}</h2>
+  <aside class="sidebar" [class.open]="isMenuOpen">
     <button class="sidebar-item" [class.active]="selectedSidebarItem === null" (click)="selectSidebarItem(null)">
       All
     </button>
@@ -8,7 +13,6 @@
       <button class="sidebar-item" [class.active]="selectedSidebarItem === item" (click)="selectSidebarItem(item)">
         {{ item }}
       </button>
-      <span class="delete-style" (click)="deleteStyle(item)">✖</span>
     </div>
     <button class="sidebar-item add-style-btn" (click)="showAddStyle = !showAddStyle">
       + Add Style
@@ -19,7 +23,6 @@
     </div>
   </aside>
   <div class="content">
-    <h1 class="page-title">{{ title }} Collection</h1>
     <div class="cards-grid">
       <div class="product-card" *ngFor="let product of filteredProducts">
         <div class="low-stock" *ngIf="isLowStock(product)">Low Stock</div>

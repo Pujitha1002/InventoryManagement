@@ -1,13 +1,11 @@
 .cart-container {
   padding: 20px;
 }
-
 .cart-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
 }
-
 .cart-card {
   background: #fff;
   border-radius: 16px;
@@ -15,21 +13,18 @@
   box-shadow: 0 6px 18px rgba(0,0,0,0.15);
   text-align: center;
 }
-
 .cart-card img {
   width: 100%;
   height: 140px;
   object-fit: cover;
   border-radius: 12px;
 }
-
 .qty-row {
   display: flex;
   justify-content: center;
   gap: 12px;
   margin: 10px 0;
 }
-
 .qty-row button {
   width: 28px;
   height: 28px;
@@ -39,7 +34,6 @@
   border-radius: 50%;
   cursor: pointer;
 }
-
 .remove-btn {
   background: red;
   color: white;
@@ -48,19 +42,16 @@
   border-radius: 8px;
   cursor: pointer;
 }
-
 .summary {
   margin-top: 30px;
   text-align: right;
   font-size: 18px;
   font-weight: 600;
 }
-
 .price {
   font-weight: 600;
   margin-top: 6px;
 }
-
 .empty {
   text-align: center;
   font-size: 16px;
@@ -90,7 +81,6 @@
   font-size: 24px;
   font-weight: 600;
 }
-
 .top-actions {
   margin-left: auto;
   display: flex;
@@ -104,7 +94,6 @@
   color: #fff;
   cursor: pointer;
 }
-
 .layout-row {
   display: flex;
   height: calc(100vh - 60px);

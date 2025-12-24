@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreProduct, Size } from '../../../models/store-product.model';
 import { FormsModule } from '@angular/forms';
-
+import { HostListener } from '@angular/core';
 @Component({
   selector: 'app-accessories',
   standalone: true,
@@ -15,6 +15,8 @@ export class AccessoriesComponent {
   sidebarItems = ['Bags', 'Caps', 'Belts'];
   selectedSidebarItem: string | null = null;
   showAddStyle = false;
+  isMenuOpen = false;
+  sidebarOpen = false;
   newStyle = '';
   sizes: Size[] = ['XS', 'S', 'M', 'L', 'XL'];
   selectedSizeMap = new Map<StoreProduct, Size | null>();
@@ -79,4 +81,18 @@ export class AccessoriesComponent {
   isLowStock(product: StoreProduct) {
     return Object.values(product.quantityPerSize).some(q => q < 3);
   }
+  toggleMenu(event: Event) {
+    event.stopPropagation();
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+  // @HostListener('document:click')
+  // clickOutside() {
+  //   this.isMenuOpen = false;
+  // }
 }

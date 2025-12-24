@@ -10,72 +10,54 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <!-- Top Bar -->
     <div class="topbar">
       <div class="hamburger" (click)="toggleMenu($event)">☰</div>
       <h1 class="title">Categories</h1>
     </div>
-
-    <!-- Layout -->
     <div class="layout-row">
-
-      <!-- Sidebar -->
       <div class="sidebar"
            [class.open]="isMenuOpen"
            (click)="$event.stopPropagation()">
         <div class="sidebar-inner">
           <p class="welcome">Hi, {{ userName }}</p>
-
           <div class="menu-buttons">
   <button routerLink="/dashboard">Categories</button>
   <button routerLink="/purchase">Purchase</button>
   <button routerLink="/sale">Sale</button>
   <button>Stock</button>
 </div>
-
-
 <button class="logout-btn" (click)="logout()">🚪 Logout</button>
         </div>
       </div>
-
-      <!-- Main Content -->
       <div class="main-wrapper" (click)="closeMenu()">
         <div class="main-content cute-bg">
           <div class="big-buttons">
-
             <button class="cat-item" routerLink="/women">
               <img src="assets/women.png" class="cat-icon" />
               <span>Women</span>
             </button>
-
             <button class="cat-item" routerLink="/men">
               <img src="assets/men.png" class="cat-icon" />
               <span>Men</span>
             </button>
-
             <button class="cat-item" routerLink="/kids">
               <img src="assets/kids.png" class="cat-icon" />
               <span>Kids</span>
             </button>
-
             <button class="cat-item" routerLink="/shoes">
               <img src="assets/shoes.png" class="cat-icon" />
               <span>Shoes</span>
             </button>
-
             <button class="cat-item" routerLink="/accessories">
               <img src="assets/accessories.png" class="cat-icon" />
               <span>Accessories</span>
             </button>
-
           </div>
         </div>
       </div>
-
     </div>
   `,
   styles: [`
-    /* FONT — SAME AS SIGNUP PAGE */
     * {
       font-family: 'Inter', sans-serif;
       box-sizing: border-box;

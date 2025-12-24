@@ -126,8 +126,19 @@ export class WomenComponent {
     this.editingProduct.price = this.newPrice;
     this.editingProduct = null;
   }
+  toggleMenu(event: Event) {
+    event.stopPropagation();
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
 
-
+  isMenuOpen = false;
+  sidebarOpen = false;
   // 🔹 ADD STYLE FEATURE (ADDED)
   showAddStyle = false;
   newStyle = '';

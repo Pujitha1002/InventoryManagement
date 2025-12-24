@@ -5,12 +5,10 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  // BehaviorSubject holds the current username and allows subscription
   private usernameSource = new BehaviorSubject<string>('Guest');
   username$ = this.usernameSource.asObservable();
 
   constructor() {
-    // Load from localStorage if available
     const storedUser = localStorage.getItem('username');
     if (storedUser) {
       this.usernameSource.next(storedUser);

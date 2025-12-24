@@ -1,10 +1,8 @@
 <div class="hamburger" (click)="toggleSidebar()">
   ☰
 </div>
-
 <aside class="sidebar" [class.open]="sidebarOpen">
   <p class="greet">Hi {{ username }}</p>
-
   <ul>
     <li>Categories</li>
     <li>Women</li>
@@ -14,32 +12,20 @@
     <li>Sale</li>
     <li>Stock</li>
   </ul>
-
-  <!-- 🔹 ADDED: Add Style button -->
   <button class="add-style-btn" (click)="showAddStyle = !showAddStyle">
     + Add Style
   </button>
-
-  <!-- 🔹 ADDED: Input + Add -->
   <div *ngIf="showAddStyle" class="add-style-box">
     <input type="text" placeholder="Enter style name" [(ngModel)]="newStyle" />
     <button (click)="addStyle()">Add</button>
   </div>
-
-  <!-- 🔹 ADDED: Show added styles -->
   <ul class="style-list">
     <li *ngFor="let s of styles">{{ s }}</li>
   </ul>
-
   <button class="logout" (click)="logout()">Logout</button>
-
 </aside>
-
-<!-- MAIN CONTENT -->
 <main class="main" [class.shrink]="sidebarOpen">
   <h2>Categories</h2>
-
   <div class="cards">
-    <!-- your category cards stay EXACTLY same -->
   </div>
 </main>

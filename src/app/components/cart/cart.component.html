@@ -1,34 +1,25 @@
-<!-- TOP BAR -->
 <div class="topbar">
     <h1 class="title">Cart</h1>
-
     <div class="top-actions">
         <button class="top-btn" (click)="back()">⬅ Back</button>
     </div>
 </div>
-
 <div class="cart-container">
-
     <div *ngIf="items.length === 0" class="empty">
         Cart is empty
     </div>
-
     <div class="cart-grid">
         <div class="cart-card" *ngFor="let item of items">
             <img [src]="item.image" />
-
             <h3>{{ item.name }}</h3>
             <p>Total Price: ₹ {{ item.unitPrice }}</p>
-
             <div class="qty-row">
                 <span>Quantity:</span>
                 <button (click)="decrease(item)">−</button>
                 <span>{{ item.qty }}</span>
                 <button (click)="increase(item)">+</button>
             </div>
-
             <button class="remove-btn" (click)="remove(item)">Remove</button>
         </div>
     </div>
-
 </div>

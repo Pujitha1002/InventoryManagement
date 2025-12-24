@@ -16,6 +16,8 @@ export class MenComponent {
   selectedSidebarItem: string | null = null;
   showAddStyle = false;
   newStyle = '';
+  isMenuOpen = false;
+  sidebarOpen = false;
 
   sizes: Size[] = ['XS', 'S', 'M', 'L', 'XL'];
   selectedSizeMap = new Map<StoreProduct, Size | null>();
@@ -98,5 +100,15 @@ export class MenComponent {
 
   isLowStock(product: StoreProduct) {
     return Object.values(product.quantityPerSize).some(q => q < 3);
+  }
+  toggleMenu(event: Event) {
+    event.stopPropagation();
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
   }
 }
