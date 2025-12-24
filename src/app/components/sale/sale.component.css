@@ -1,0 +1,265 @@
+
+* {
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+ 
+.sale-container {
+  min-height: 100vh;
+  padding: 40px;
+  /* background: linear-gradient(135deg, #faf9f7, #efeae3); */
+}
+ 
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+ 
+.header h1 {
+  font-size: 32px;
+  font-weight: 600;
+}
+ 
+.report-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  /* background: #111; */
+  color: white;
+  cursor: pointer;
+}
+ 
+/* CONTENT */
+.sale-content {
+  display: flex;
+  gap: 40px;
+}
+ 
+/* FORM */
+.form-section {
+  flex: 1;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+ 
+.form-section label {
+  font-weight: 500;
+}
+ 
+.form-section input,
+.form-section select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+ 
+/* SIZE */
+.size-box {
+  display: flex;
+  gap: 10px;
+}
+ 
+.size-box button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+ 
+.size-box button.active {
+  background: #111;
+  color: white;
+}
+ 
+/* TOTAL */
+.total {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+ 
+/* BUY BUTTON */
+.buy-btn {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #111;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+ 
+/* IMAGE */
+.image-section {
+  width: 350px;
+}
+ 
+.image-box {
+  height: 300px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #e5e2dc, #f6f4f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.hamburger {
+  font-size: 28px;
+  cursor: pointer;
+  margin-right: 20px;
+  padding: 2px 6px;
+  border: 2px solid #333;
+  border-radius: 6px;
+}
+
+.layout-row {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+.sidebar {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  background: #ffffff;
+}
+
+.sidebar.open {
+  width: 260px;
+}
+
+.sidebar-inner {
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: auto;
+}
+
+.menu-buttons button,
+.logout-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #f5f5f5;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.main-wrapper {
+  flex: 1;
+}
+
+.main-content {
+  padding: 20px;
+}
+.top-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+/* THIS IS THE KEY */
+.top-actions {
+  margin-left: auto;   /* pushes button to rightmost */
+  display: flex;
+  align-items: center;
+}
+
+/* keep same cart-style button look */
+.top-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+/* CENTER THE SALE FORM */
+.sale-content {
+  justify-content: center;
+}
+
+/* LIMIT WIDTH OF FORM */
+.form-section {
+  max-width: 520px;     /* 🔹 compact size */
+  width: 100%;
+}
+
+/* IMAGE INLINE (not separate box) */
+.inline-image {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 20px;
+}
+
+/* IMAGE SIZE CONTROL */
+.inline-image .image-box {
+  width: 180px;
+  height: 180px;
+}
+/* ===== CATEGORY + IMAGE INLINE LAYOUT ===== */
+
+.top-form-row {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.form-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* smaller inline image */
+.small-image {
+  width: 160px;
+  height: 160px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #e5e2dc, #f6f4f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  text-align: center;
+  flex-shrink: 0;
+}

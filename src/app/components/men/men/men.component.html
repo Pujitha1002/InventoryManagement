@@ -1,50 +1,62 @@
 <div class="page-container">
-  <aside class="sidebar">
-    <h2 class="sidebar-title">Men</h2>
 
-    <button class="sidebar-item"
-      [class.active]="selectedSidebarItem === null"
-      (click)="selectSidebarItem(null)">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">{{ title }}</h2>
+
+    <button class="sidebar-item" [class.active]="selectedSidebarItem === null" (click)="selectSidebarItem(null)">
       All
     </button>
 
-    <button *ngFor="let item of sidebarItems"
-      class="sidebar-item"
-      [class.active]="selectedSidebarItem === item"
-      (click)="selectSidebarItem(item)">
-      {{ item }}
+    <div *ngFor="let item of sidebarItems" class="sidebar-style-row">
+      <button class="sidebar-item" [class.active]="selectedSidebarItem === item" (click)="selectSidebarItem(item)">
+        {{ item }}
+      </button>
+
+      <span class="delete-style" (click)="deleteStyle(item)">✖</span>
+    </div>
+    <button class="sidebar-item add-style-btn" (click)="showAddStyle = !showAddStyle">
+      + Add Style
     </button>
+
+    <div *ngIf="showAddStyle" class="add-style-box">
+      <input type="text" placeholder="Enter style name" [(ngModel)]="newStyle" />
+      <button class="sidebar-item" (click)="addStyle()">Add</button>
+    </div>
+
   </aside>
 
-  <main class="content">
-    <h1 class="page-title">Men</h1>
+  <!-- Main content -->
+  <div class="content">
+    <h1 class="page-title">{{ title }} Collection</h1>
 
     <div class="cards-grid">
       <div class="product-card" *ngFor="let product of filteredProducts">
-        <div class="low-stock" *ngIf="product.isLowStock">Low stock</div>
-
-        <div class="image-box">Image</div>
+        <div class="low-stock" *ngIf="isLowStock(product)">Low Stock</div>
+        <div class="image-box">{{ product.name }}</div>
 
         <div class="info">
           <div class="name">{{ product.name }}</div>
-
-          <div class="size-row">
-            <span class="label">Size:</span>
-            <div class="size-options">
-              <div class="size-circle" [class.selected]="isSizeSelected(product,'S')">S</div>
-              <div class="size-circle" [class.selected]="isSizeSelected(product,'M')">M</div>
-              <div class="size-circle" [class.selected]="isSizeSelected(product,'L')">L</div>
-            </div>
-          </div>
-
           <div class="price-row">
             <span class="label">Price:</span>
             <span class="price">₹ {{ product.price }}</span>
           </div>
+
+          <div class="size-row">
+            <span class="label">Size:</span>
+            <div class="size-options">
+              <div class="size-circle" *ngFor="let size of sizes" [class.selected]="isSizeSelected(product, size)"
+                (click)="selectSize(product, size)">
+                {{ size }}
+              </div>
+            </div>
+          </div>
+
+          <button class="add-cart-btn">
+            Quantity: {{ getQuantity(product) }}
+          </button>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>
-
-

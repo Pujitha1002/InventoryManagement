@@ -1,11 +1,33 @@
-<div class="app-container">
-  <h1>{{ title }}</h1>
-  <router-outlet></router-outlet>
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="hamburger" (click)="toggleSidebar($event)">☰</span>
+  <h2 class="title">{{ pageTitle }}</h2>
+
+  <div class="top-actions" *ngIf="pageTitle === 'Purchase'">
+    <button class="top-btn">🛒 Cart</button>
+    <button class="top-btn">⚠ Low Stock</button>
+  </div>
 </div>
 
+<!-- SIDEBAR -->
+<aside class="sidebar" [class.open]="sidebarOpen" (click)="$event.stopPropagation()">
+  <p class="greet">Hi {{ username }}</p>
 
+  <button routerLink="/dashboard" (click)="setTitle('Categories')">
+    Categories
+  </button>
 
+  <button routerLink="/dashboard/purchase" (click)="setTitle('Purchase')">
+    Purchase
+  </button>
 
+  <button>Sale</button>
+  <button>Stock</button>
 
+  <button class="logout">Logout</button>
+</aside>
 
-
+<!-- CONTENT -->
+<div class="main-content" (click)="closeSidebar()">
+  <router-outlet></router-outlet>
+</div>

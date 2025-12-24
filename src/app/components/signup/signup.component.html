@@ -1,24 +1,109 @@
-<div class="form-container">
-  <h2>Sign Up</h2>
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-    <input type="text" formControlName="name" placeholder="Full Name" required/>
-    <input type="email" formControlName="email" placeholder="Email" required/>
-    <input type="password" formControlName="password" placeholder="Password" required/>
-    <input type="password" formControlName="confirmPassword" placeholder="Confirm Password" required/>
-    <button type="submit">Sign Up</button>
-    <p>Already have an account? <a routerLink="/signin">Sign In</a></p>
-  </form>
+<div class="page">
+  <div class="card">
+
+    <h1>Inventory Tracker</h1>
+    <p class="subtitle">Stock management</p>
+
+    <!-- Backend error -->
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+      <!-- FIRST NAME -->
+      <input
+        type="text"
+        placeholder="First Name"
+        formControlName="firstName"
+      />
+
+      <small *ngIf="
+        signupForm.get('firstName')?.touched &&
+        signupForm.get('firstName')?.errors?.['required']
+      ">
+        First name is required
+      </small>
+
+      <small *ngIf="
+        signupForm.get('firstName')?.touched &&
+        signupForm.get('firstName')?.errors?.['pattern']
+      ">
+        Enter only letters
+      </small>
+
+      <!-- LAST NAME -->
+      <input
+        type="text"
+        placeholder="Last Name"
+        formControlName="lastName"
+      />
+
+      <!-- <small *ngIf="
+        signupForm.get('lastName')?.touched &&
+        signupForm.get('lastName')?.errors?.['required']
+      ">
+        Last name is required
+      </small> -->
+
+      <small *ngIf="
+        signupForm.get('lastName')?.touched &&
+        signupForm.get('lastName')?.errors?.['pattern']
+      ">
+        Enter only letters
+      </small>
+
+      <!-- EMAIL -->
+      <input
+        type="email"
+        placeholder="Email"
+        formControlName="email"
+      />
+
+      <small *ngIf="
+        signupForm.get('email')?.touched &&
+        signupForm.get('email')?.errors?.['required']
+      ">
+        Email is required
+      </small>
+
+      <small *ngIf="
+        signupForm.get('email')?.touched &&
+        signupForm.get('email')?.errors?.['pattern']
+      ">
+        Enter a valid Gmail address
+      </small>
+
+      <!-- PHONE -->
+      <input
+        type="text"
+        placeholder="Phone Number"
+        formControlName="phone"
+      />
+
+      <small *ngIf="
+        signupForm.get('phone')?.touched &&
+        signupForm.get('phone')?.errors?.['required']
+      ">
+        Phone number is required
+      </small>
+
+      <small *ngIf="
+        signupForm.get('phone')?.touched &&
+        signupForm.get('phone')?.errors?.['pattern']
+      ">
+        Phone number must be 10 digits
+      </small>
+
+      <!-- IMPORTANT: BUTTON NOT DISABLED -->
+      <button type="submit">
+        Create Account
+      </button>
+
+    </form>
+
+    <div class="footer">
+      <span>Already have an account?</span>
+      <a routerLink="/signin">Sign in</a>
+    </div>
+
+  </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-

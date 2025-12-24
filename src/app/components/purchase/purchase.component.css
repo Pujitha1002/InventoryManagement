@@ -1,0 +1,413 @@
+/* SAME BASE STYLES AS DASHBOARD */
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 200;
+}
+
+.hamburger {
+  font-size: 28px;
+  cursor: pointer;
+  margin-right: 20px;
+  padding: 2px 6px;
+  border: 2px solid #333;
+  border-radius: 6px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.top-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.top-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.layout-row {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+.sidebar {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  background: #ffffff;
+}
+
+.sidebar.open {
+  width: 260px;
+}
+
+.sidebar-inner {
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: auto;
+}
+
+.menu-buttons button,
+.logout-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #f5f5f5;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.main-wrapper {
+  flex: 1;
+}
+
+.main-content {
+  height: 100%;
+  padding: 20px;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.purchase-card {
+  width: 420px;
+  background: white;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.sizes {
+  margin-top: 16px;
+}
+
+.size-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.size-row button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.price {
+  margin-top: 14px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.product-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.add-btn {
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.cart-panel {
+  width: 300px;
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  margin-left: 30px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.cart-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+}
+
+.welcome {
+  margin-bottom: 30px; /* ✅ space below Hi Guest */
+}
+
+/* 🔹 Make NEW Product inputs look like dropdowns (Purchase page) */
+.purchase-card input[type="text"],
+.purchase-card input[type="number"] {
+  width: 100%;
+  height: 44px;              /* same height as select */
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* focus same as dropdown */
+.purchase-card input[type="text"]:focus,
+.purchase-card input[type="number"]:focus {
+  border-color: #000;
+}
+/* 🔹 Existing / New toggle buttons */
+.product-mode-toggle {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.product-mode-toggle .top-btn {
+  flex: 1;                 /* equal width */
+  border-radius: 0;        /* remove individual rounding */
+  background: #f1f1f1;
+  color: #000;
+}
+
+/* Active state (based on productMode) */
+.product-mode-toggle .top-btn:first-child.active,
+.product-mode-toggle .top-btn:last-child.active {
+  background: #000;
+  color: #fff;
+}
+/* space between Existing & New buttons */
+.product-mode-toggle .top-btn + .top-btn {
+  border-left: 1px solid #ddd;
+}
+/* MODE TOGGLE */
+.mode-toggle {
+  display: flex;
+  gap: 12px;              /* ✅ space between buttons */
+  margin-top: 14px;
+}
+
+.mode-btn {
+  flex: 1;                /* ✅ equal width */
+  padding: 10px 0;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.mode-btn.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.mode-btn:hover {
+  background: #eaeaea;
+}
+/* 🔹 RECTANGULAR SIZE BOX */
+.size-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid #ddd;
+  border-radius: 12px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
+  background: #fff;
+}
+
+.size-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.size-btn:hover {
+  opacity: 0.85;
+}
+
+.size-center {
+  text-align: center;
+  flex: 1;
+}
+
+.size-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.size-qty {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Sizes container – single line */
+.sizes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;   /* ❗ single line */
+  overflow-x: auto;    /* scroll if screen is small */
+}
+
+.size-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #f6f6f6;   /* very light */
+  min-width: 85px;
+}
+
+/* + and - buttons – NO background, NO border */
+.qty-btn {
+  border: none;
+  background: transparent;   /* ❌ remove black fill */
+  color: #000;               /* simple icon look */
+  width: 16px;               /* smaller size */
+  height: 16px;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.qty-btn:hover {
+  color: #000;               /* no glow / no bg */
+}
+
+
+.qty-btn:focus,
+.qty-btn:active {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Size text in center */
+.size-text {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+/* 🔹 Quantity animation */
+.size-text {
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+/* when quantity changes */
+.qty-btn:active + .size-text,
+.size-text:has(+ .qty-btn:active) {
+  transform: scale(1.08);
+  color: #000;
+}
+
+/* disabled minus button */
+.qty-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.size-text {
+  transition: transform 0.15s ease;
+}
+
+.qty-btn:active + .size-text,
+.size-text:active {
+  transform: scale(1.1);
+}
+.qty-animate {
+  transition: transform 0.15s ease;
+}
+/* ===== PURCHASE IMAGE ALIGNMENT (ADDED ONLY) ===== */
+
+.purchase-top-row {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.purchase-left {
+  flex: 1;
+}
+
+.purchase-image-box {
+  width: 180px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 180px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #e5e2dc, #f6f4f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #333;
+}

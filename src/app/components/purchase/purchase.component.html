@@ -1,0 +1,200 @@
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="hamburger" (click)="toggleMenu($event)">☰</div>
+    <h1 class="title">Purchase</h1>
+
+    <div class="top-actions">
+        <button class="top-btn" (click)="toggleCartPanel()">🛒 Cart</button>
+        <button class="top-btn" (click)="toggleLowStockPanel()">⚠ Low Stock</button>
+    </div>
+
+</div>
+
+<div class="layout-row">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" [class.open]="isMenuOpen" (click)="$event.stopPropagation()">
+        <div class="sidebar-inner">
+            <p class="welcome">Hi, {{ userName }}</p>
+
+            <div class="menu-buttons">
+                <button routerLink="/dashboard">Categories</button>
+                <button disabled>Purchase</button>
+                <button routerLink="/sale">Sale</button>
+                <button routerLink="/stock">Stock</button>
+            </div>
+
+            <button class="logout-btn" (click)="logout()">🚪 Logout</button>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-wrapper" (click)="closeMenu()">
+        <div class="main-content center-content">
+
+            <div class="purchase-card purchase-layout">
+
+
+                <div class="purchase-top-row">
+
+                    <!-- LEFT FORM (existing content stays same) -->
+                    <div class="purchase-left">
+
+                        <label>Category</label>
+                        <select [(ngModel)]="selectedCategory">
+                            <option disabled selected>Select category</option>
+                            <option *ngFor="let c of categories">{{ c }}</option>
+                        </select>
+
+                        <label>Style Name</label>
+                        <select [(ngModel)]="selectedStyle">
+                            <option disabled selected>Select style</option>
+                            <option *ngFor="let s of filteredStyles">{{ s }}</option>
+                        </select>
+
+                        <div class="mode-toggle">
+                            <button class="mode-btn" [class.active]="productMode === 'existing'"
+                                (click)="productMode='existing'">Existing</button>
+
+                            <button class="mode-btn" [class.active]="productMode === 'new'"
+                                (click)="productMode='new'">New</button>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT IMAGE (NEW – ONLY ADDITION) -->
+                    <div class="purchase-image-box">
+                        <div class="image-placeholder">
+                            Image of Product
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- EXISTING -->
+                <div *ngIf="productMode==='existing'">
+                    <label>Product</label>
+                    <select [(ngModel)]="selectedProduct">
+                        <option disabled selected>Select product</option>
+                        <option *ngFor="let p of filteredProducts" [ngValue]="p">
+                            {{ p.name }}
+                        </option>
+                    </select>
+
+                    <div class="sizes">
+                        <div class="size-box" *ngFor="let s of activeSizes">
+                            <button class="qty-btn" (click)="decrease(s)" [disabled]="
+    productMode === 'existing'
+      ? selectedProduct?.quantityPerSize?.[s] === 0
+      : newProductSizes[s] === 0
+  ">
+                                −
+                            </button>
+
+
+                            <span class="size-text qty-animate">
+                                {{ s }} ({{ productMode === 'existing'
+                                ? selectedProduct?.quantityPerSize?.[s]
+                                : newProductSizes[s] || 0 }})
+                            </span>
+
+
+                            <button class="qty-btn" (click)="increase(s)">+</button>
+                        </div>
+                    </div>
+
+
+                    <div class="price">Total: ₹ {{ totalPrice }}</div>
+
+                    <button class="add-btn" (click)="addExistingToCart()"
+                        [disabled]="totalQuantity === 0 || totalPrice === 0">
+                        Add
+                    </button>
+
+                    <p *ngIf="totalQuantity === 0" style="color:red; font-size:12px; margin-top:6px;">
+                        Please select quantity to add product
+                    </p>
+
+                </div>
+
+                <!-- NEW -->
+                <div *ngIf="productMode==='new'">
+                    <label>Product Name</label>
+                    <input type="text" [(ngModel)]="newProductName" />
+
+                    <label>Price</label>
+                    <input type="number" [(ngModel)]="newProductPrice" />
+
+                    <div *ngIf="activeSizes.length" class="sizes">
+                        <div class="size-box" *ngFor="let s of activeSizes">
+                            <button class="qty-btn" (click)="decrease(s)" [disabled]="(newProductSizes[s] || 0) === 0">
+                                −
+                            </button>
+
+                            <span class="size-text">
+                                {{ s }} ({{ newProductSizes[s] || 0 }})
+                            </span>
+
+                            <button class="qty-btn" (click)="increase(s)">+</button>
+                        </div>
+                    </div>
+
+
+                    <button class="add-btn" (click)="addNewProduct()"
+                        [disabled]="totalQuantity === 0 || newProductPrice === 0">
+                        Add Product
+                    </button>
+
+                    <p *ngIf="totalQuantity === 0" style="color:red; font-size:12px; margin-top:6px;">
+                        Quantity cannot be zero
+                    </p>
+
+                    <p *ngIf="newProductPrice === 0" style="color:red; font-size:12px;">
+                        Price must be greater than zero
+                    </p>
+
+                </div>
+
+            </div>
+            <div class="main-content center-content">
+                <!-- CART PANEL -->
+                <div *ngIf="showCartPanel" class="cart-panel">
+                    <h3>Cart</h3>
+
+                    <div *ngIf="cartItems.length === 0">
+                        Cart is empty
+                    </div>
+
+                    <div *ngFor="let c of cartItems" class="cart-item">
+                        <img [src]="c.image" />
+                        <div>
+                            <p>{{ c.name }}</p>
+                            <small>Qty: {{ c.totalQty }}</small>
+                            <p>₹ {{ c.totalPrice }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LOW STOCK PANEL -->
+                <div *ngIf="showLowStockPanel" class="cart-panel">
+                    <h3>Low Stock Items</h3>
+
+                    <div *ngIf="lowStockProducts.length === 0">
+                        No low stock items 🎉
+                    </div>
+
+                    <div *ngFor="let p of lowStockProducts" class="cart-item">
+                        <div>
+                            <p>{{ p.name }}</p>
+                            <small>{{ p.category }}</small>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>

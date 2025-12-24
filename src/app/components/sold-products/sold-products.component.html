@@ -1,0 +1,31 @@
+<div class="topbar">
+    <h1 class="title">Sold Products</h1>
+    <button class="top-btn" (click)="goBack()">⬅ Back</button>
+</div>
+<div class="sold-wrapper">
+  <div class="sold-grid">
+    <div class="sold-card" *ngFor="let p of soldProducts">
+      <img class="sold-img" src="assets/default-product.png" />
+
+      <h4>{{ p.productName }}</h4>
+
+      <div class="sold-meta">
+        {{ p.category }} | {{ p.style }} | {{ p.size }}
+      </div>
+
+      <div class="sold-qty">Qty: {{ p.quantity }}</div>
+      <div class="sold-total">₹ {{ p.total }}</div>
+    </div>
+  </div>
+
+  <div *ngIf="soldProducts.length === 0" class="empty-state">
+    No products sold yet
+  </div>
+</div>
+
+
+
+<!-- EMPTY STATE -->
+<div class="empty-state" *ngIf="soldProducts.length === 0">
+    No products sold yet
+</div>

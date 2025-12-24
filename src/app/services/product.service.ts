@@ -1,44 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../models/Product.model';
+import { InventoryProduct } from '../models/inventory-product.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ProductService {
-  private products: Product[] = [
+
+  products: InventoryProduct[] = [
     {
       productId: 1,
-      productName: 'Laptop',
-      categoryName: 'Electronics',
-      price: 50000,
-      quantity: 5,
-      productDetails: 'High-end gaming laptop',
-      createdDate: new Date()
+      productName: 'Plain T-shirt',
+      categoryName: 'Men',
+      price: 499,
+      quantity: 20
     },
     {
       productId: 2,
-      productName: 'Mouse',
-      categoryName: 'Electronics',
-      price: 500,
-      quantity: 20,
-      productDetails: 'Wireless mouse',
-      createdDate: new Date()
+      productName: 'Floral Dress',
+      categoryName: 'Women',
+      price: 1099,
+      quantity: 10
     }
   ];
 
-  constructor() {}
-
-  getProducts(): Product[] {
+  getProducts() {
     return this.products;
-  }
-
-  addProduct(product: Product) {
-    this.products.push(product);
-  }
-
-  updateProduct(updatedProduct: Product) {
-    const index = this.products.findIndex(p => p.productId === updatedProduct.productId);
-    if (index !== -1) this.products[index] = updatedProduct;
   }
 
   deleteProduct(productId: number) {

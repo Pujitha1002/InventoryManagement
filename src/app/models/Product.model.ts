@@ -1,9 +1,8 @@
 export interface Product {
-  productId: number;
-  productName: string;
-  categoryName: string;
+  name: string;
+  category: string;
   price: number;
   quantity: number;
-  productDetails: string;
-  createdDate: Date;
+  selectedSize?: 'S' | 'M' | 'L';
 }
+

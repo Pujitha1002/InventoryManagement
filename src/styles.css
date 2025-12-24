@@ -27,7 +27,17 @@
   stroke: #222;
 }
 
+/* ✅ FINAL BACKGROUND FIX */
 body {
-  background: var(--ivory);
+  margin: 0;
+  min-height: 100vh;
+
+  /* FORCE IMAGE TO WIN */
+  background-color: transparent !important;
+  background-image: url('/assets/auth-bg.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+
   color: var(--charcoal);
 }

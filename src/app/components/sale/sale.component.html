@@ -1,0 +1,116 @@
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="hamburger" (click)="toggleMenu($event)">☰</div>
+    <h1 class="title">Sale</h1>
+
+    <!-- ADD THIS -->
+    <div class="top-actions">
+        <button class="top-btn" (click)="goToViewProducts()">
+            📦 View Products
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="layout-row">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" [class.open]="isMenuOpen" (click)="$event.stopPropagation()">
+        <div class="sidebar-inner">
+            <p class="welcome">Hi, {{ userName }}</p>
+
+            <div class="menu-buttons">
+                <button routerLink="/dashboard">Categories</button>
+                <button routerLink="/purchase">Purchase</button>
+                <button disabled>Sale</button>
+                <button>Stock</button>
+            </div>
+
+            <button class="logout-btn" (click)="logout()">🚪 Logout</button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper" (click)="closeMenu()">
+        <div class="main-content">
+
+            <div class="sale-container">
+
+                <!-- HEADER -->
+
+
+                <div class="sale-content">
+
+                    <!-- LEFT FORM -->
+                    <div class="form-section">
+
+
+
+                        <div class="top-form-row">
+                            <div class="form-fields">
+                                <label>Category</label>
+                                <select [(ngModel)]="category">
+                                    <option value="" disabled selected>Select Category</option>
+                                    <option>Women</option>
+                                    <option>Men</option>
+                                    <option>Kids</option>
+                                    <option>Shoes</option>
+                                    <option>Accessories</option>
+                                </select>
+
+                                <label>Style</label>
+                                <select [(ngModel)]="style">
+                                    <option value="" disabled selected>Select Style</option>
+                                    <option *ngFor="let s of styles">{{ s }}</option>
+                                </select>
+
+                                <label>Product</label>
+                                <select [(ngModel)]="productName">
+                                    <option value="" disabled selected>Select Product</option>
+                                    <option>Kurti</option>
+                                    <option>Kurta</option>
+                                    <option>Nightwear</option>
+                                    <option>Printed Tshirt</option>
+                                </select>
+                            </div>
+
+
+
+
+                            <div class="inline-image">
+                                <div class="image-box">Image of Product</div>
+                            </div>
+                        </div>
+
+                        <label>Size</label>
+                        <div class="size-box">
+                            <button *ngFor="let s of sizes" (click)="size = s" [class.active]="size === s">
+                                {{ s }}
+                            </button>
+                        </div>
+
+                        <label>Price</label>
+                        <input type="number" [(ngModel)]="price">
+
+                        <label>Quantity</label>
+                        <input type="number" [(ngModel)]="quantity">
+
+                        <div class="total">
+                            Total Price: ₹ {{ totalPrice }}
+                        </div>
+
+                        <button class="buy-btn" (click)="buyProduct()">Buy</button>
+
+                    </div>
+
+                    <!-- RIGHT IMAGE -->
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>

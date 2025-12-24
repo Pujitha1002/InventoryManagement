@@ -1,11 +1,14 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { StyleService } from '../../services/style.service';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <!-- Top Bar -->
     <div class="topbar">
@@ -24,13 +27,14 @@ import { RouterModule } from '@angular/router';
           <p class="welcome">Hi, {{ userName }}</p>
 
           <div class="menu-buttons">
-            <button>📂 Categories</button>
-            <button>🛒 Purchase</button>
-            <button>💰 Sale</button>
-            <button>📦 Stock</button>
-          </div>
+  <button routerLink="/dashboard">Categories</button>
+  <button routerLink="/purchase">Purchase</button>
+  <button routerLink="/sale">Sale</button>
+  <button>Stock</button>
+</div>
 
-          <button class="logout-btn">🚪 Logout</button>
+
+<button class="logout-btn" (click)="logout()">🚪 Logout</button>
         </div>
       </div>
 
@@ -74,60 +78,63 @@ import { RouterModule } from '@angular/router';
     /* FONT — SAME AS SIGNUP PAGE */
     * {
       font-family: 'Inter', sans-serif;
+      box-sizing: border-box;
     }
 
     .topbar {
       display: flex;
       align-items: center;
-      padding: 15px;
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      position: relative;
+      padding: 16px 24px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      position: sticky;
+      top:0;
       z-index: 200;
     }
 
     .hamburger {
-      font-size: 28px;
+      font-size: 26px;
       cursor: pointer;
       margin-right: 20px;
-      padding: 2px 6px;
-      border: 2px solid #333;
-      border-radius: 6px;
+      padding: 4px 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: white;
     }
 
     .title {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 600;
     }
 
     .layout-row {
       display: flex;
       height: calc(100vh - 60px);
-      width: 100%;
     }
 
     .sidebar {
       width: 0;
       overflow: hidden;
-      transition: width 0.3s ease;
-      background: #ffffff;
-      border-right: 3px solid transparent;
+      transition: width 0.35s ease;
+      // background: #ffffff;
+      box-shadow: 10px 0 30px rgba(0,0,0,0.1);
     }
 
     .sidebar.open {
       width: 260px;
-      border-right-color: #e0e0e0;
+      // border-right-color: #e0e0e0;
     }
 
     .sidebar-inner {
       height: 100%;
-      padding: 20px;
+      padding: 30px 20px;
       display: flex;
       flex-direction: column;
     }
 
     .welcome {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       font-size: 16px;
       font-weight: 500;
     }
@@ -135,17 +142,17 @@ import { RouterModule } from '@angular/router';
     .menu-buttons {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
       margin-bottom: auto;
     }
 
     .menu-buttons button,
     .logout-btn {
-      width: 100%;
-      padding: 12px;
+      padding: 14px;
       border: none;
       background: #f5f5f5;
-      border-radius: 10px;
+      border-radius: 14px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
       cursor: pointer;
       font-size: 14px;
       text-align: left;
@@ -157,19 +164,16 @@ import { RouterModule } from '@angular/router';
     }
 
     .main-content {
-      width: 100%;
       height: 100%;
       overflow-y: auto;
-      padding: 20px;
-      box-sizing: border-box;
+      padding: 50px 40px;
     }
 
     .big-buttons {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
       justify-items: center;
-      width: 100%;
       margin-top: 40px;
     }
 
@@ -184,23 +188,24 @@ import { RouterModule } from '@angular/router';
     }
 
     .cat-item {
-      background: white;
+      // background: white;
       border: none;
-      border-radius: 22px;
-      padding: 24px;
-      width: 220px;
-      height: 220px;
+      border-radius: 26px;
+      padding: 28px;
+      width: 240px;
+      height: 240px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: 0.2s ease;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
     }
 
     .cat-item:hover {
-      transform: scale(1.05);
+      transform: translateY(-8px);
+      box-shadow: 0 35px 70px rgba(0,0,0,0.22);
     }
 
     .cat-icon {
@@ -208,7 +213,8 @@ import { RouterModule } from '@angular/router';
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      padding:16px;
     }
 
     .cat-item span {
@@ -216,9 +222,20 @@ import { RouterModule } from '@angular/router';
       font-weight: 600;
     }
 
+        :host {
+      display: block;
+      height: 100vh;
+      // background: linear-gradient(
+      //   135deg,
+      //   #faf9f7 0%,
+      //   #f1ede7 50%,
+      //   #e6dfd5 100%
+      // );
+    }
+
     @media (max-width: 900px) {
       .big-buttons {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, 1fr);
       }
       .big-buttons button:nth-child(4),
       .big-buttons button:nth-child(5) {
@@ -231,7 +248,12 @@ import { RouterModule } from '@angular/router';
 export class DashboardComponent implements OnInit {
   userName = 'Guest';
   isMenuOpen = false;
+  sidebarOpen = false;
+  showAddStyle = false;
+  newStyle = '';
+  styles: string[] = ['All', 'Tops', 'Dresses', 'Jeans', 'Jackets'];
 
+  constructor(private styleService: StyleService, private router: Router) { }
   ngOnInit() {
     const storedUser = localStorage.getItem('username');
     if (storedUser) {
@@ -247,9 +269,32 @@ export class DashboardComponent implements OnInit {
   closeMenu() {
     this.isMenuOpen = false;
   }
+  logout() {
+    // optional: clear storage later if you want
+    // localStorage.clear();
+    // sessionStorage.clear();
+
+    localStorage.clear();   // optional but recommended
+    this.router.navigate(['/signin']); // or '/signin'
+  }
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  addStyle() {
+    if (!this.newStyle.trim()) return;
+
+    this.styles.push(this.newStyle.trim());
+    this.newStyle = '';
+  }
+
 
   @HostListener('document:click')
   clickOutside() {
     this.isMenuOpen = false;
+  }
+  close() {
+    this.sidebarOpen = false;
   }
 }
