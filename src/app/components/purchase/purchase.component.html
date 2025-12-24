@@ -4,10 +4,9 @@
     <h1 class="title">Purchase</h1>
 
     <div class="top-actions">
-        <button class="top-btn" (click)="toggleCartPanel()">🛒 Cart</button>
+        <button class="top-btn" routerLink="/cart">🛒 Cart</button>
         <button class="top-btn" (click)="toggleLowStockPanel()">⚠ Low Stock</button>
     </div>
-
 </div>
 
 <div class="layout-row">
@@ -157,44 +156,3 @@
                 </div>
 
             </div>
-            <div class="main-content center-content">
-                <!-- CART PANEL -->
-                <div *ngIf="showCartPanel" class="cart-panel">
-                    <h3>Cart</h3>
-
-                    <div *ngIf="cartItems.length === 0">
-                        Cart is empty
-                    </div>
-
-                    <div *ngFor="let c of cartItems" class="cart-item">
-                        <img [src]="c.image" />
-                        <div>
-                            <p>{{ c.name }}</p>
-                            <small>Qty: {{ c.totalQty }}</small>
-                            <p>₹ {{ c.totalPrice }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- LOW STOCK PANEL -->
-                <div *ngIf="showLowStockPanel" class="cart-panel">
-                    <h3>Low Stock Items</h3>
-
-                    <div *ngIf="lowStockProducts.length === 0">
-                        No low stock items 🎉
-                    </div>
-
-                    <div *ngFor="let p of lowStockProducts" class="cart-item">
-                        <div>
-                            <p>{{ p.name }}</p>
-                            <small>{{ p.category }}</small>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-            </div>
-        </div>
-    </div>
