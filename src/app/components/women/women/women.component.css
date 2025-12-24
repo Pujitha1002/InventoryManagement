@@ -93,8 +93,26 @@
 }
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(4, 1fr); /* ✅ 4 cards */
+  gap: 36px; /* ✅ more spacing */
+  transition: grid-template-columns 0.3s ease;
+}
+@media (max-width: 1200px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
 .product-card {
   backdrop-filter: blur(10px);
@@ -315,4 +333,8 @@
 
 .sidebar.open ~ .content {
   margin-left: 300px;        /* 👈 content moves instead of hiding */
+}
+/* When sidebar is open, reduce to 3 cards */
+.sidebar.open ~ .content .cards-grid {
+  grid-template-columns: repeat(3, 1fr);
 }
