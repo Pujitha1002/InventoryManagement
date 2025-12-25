@@ -1,239 +1,233 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CartService } from '../../services/cart.services';
-import { Router } from '@angular/router';
 
 interface StoreProduct {
-    name: string;
-    category: string;
-    price: number;
-    image: string;
-    quantityPerSize?: Record<string, number>;
+  name: string;
+  category: string;
+  price: number;
+  image: string;
+  quantityPerSize?: Record<string, number>;
 }
 
 @Component({
-    selector: 'app-purchase',
-    standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule],
-    templateUrl: './purchase.component.html',
-    styleUrls: ['./purchase.component.css']
+  selector: 'app-purchase',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './purchase.component.html',
+  styleUrls: ['./purchase.component.css']
 })
 export class PurchaseComponent implements OnInit {
 
-    /* ===== SIDEBAR (UNCHANGED) ===== */
-    userName = 'Guest';
-    isMenuOpen = false;
-    showCartPanel = false;
-    showLowStockPanel = false;
+  /* ---------------- BASIC ---------------- */
+  userName = 'Guest';
+  isMenuOpen = false;
+  showCartPanel = false;
+  showLowStockPanel = false;
 
-    constructor(public cartService: CartService, private router: Router) { }
+  constructor(public cartService: CartService, private router: Router) {}
 
-    ngOnInit() {
-        const storedUser = localStorage.getItem('username');
-        if (storedUser) this.userName = storedUser;
+  ngOnInit() {
+    const storedUser = localStorage.getItem('username');
+    if (storedUser) this.userName = storedUser;
+  }
+
+  toggleMenu(event: Event) {
+    event.stopPropagation();
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/signin']);
+  }
+
+  @HostListener('document:click')
+  clickOutside() {
+    this.isMenuOpen = false;
+  }
+
+  /* ---------------- DATA ---------------- */
+
+  categories = ['Women', 'Men', 'Kids', 'Shoes', 'Accessories'];
+
+  clothingSizes = ['XS', 'S', 'M', 'L', 'XL'];
+  shoeSizes = ['6', '7', '8', '9', '10'];
+
+  products: StoreProduct[] = [
+    {
+      name: 'Crop Top',
+      category: 'Women',
+      price: 499,
+      image: 'assets/women.png',
+      quantityPerSize: { XS: 0, S: 0, M: 0, L: 0, XL: 0 }
+    }
+  ];
+
+  selectedCategory: string | null = null;
+  selectedStyle: string | null = null;
+  selectedProduct: StoreProduct | null = null;
+
+  productMode: 'existing' | 'new' = 'existing';
+
+  newProductName = '';
+  newProductPrice = 0;
+  newProductSizes: Record<string, number> = {};
+  newProductImage: string | null = null;
+
+  /* ---------------- FILTERS ---------------- */
+
+  get filteredProducts() {
+    return this.selectedCategory
+      ? this.products.filter(p => p.category === this.selectedCategory)
+      : [];
+  }
+
+  get activeSizes(): string[] {
+    if (this.productMode === 'new') {
+      if (this.selectedCategory === 'Shoes') return this.shoeSizes;
+      if (this.selectedCategory === 'Accessories') return [];
+      return this.clothingSizes;
     }
 
-    toggleMenu(event: Event) {
-        event.stopPropagation();
-        this.isMenuOpen = !this.isMenuOpen;
-    }
-    toggleCartPanel() {
-        this.showCartPanel = !this.showCartPanel;
-    }
+    if (!this.selectedProduct?.quantityPerSize) return [];
+    return Object.keys(this.selectedProduct.quantityPerSize);
+  }
 
-    toggleLowStockPanel() {
-        this.showLowStockPanel = !this.showLowStockPanel;
-    }
+  /* ---------------- QUANTITY ---------------- */
 
-    closeMenu() {
-        this.isMenuOpen = false;
+  increase(size: string) {
+    if (this.productMode === 'existing' && this.selectedProduct?.quantityPerSize) {
+      this.selectedProduct.quantityPerSize[size]++;
     }
 
-    logout() {
-        // optional: clear storage later if you want
-        // localStorage.clear();
-        // sessionStorage.clear();
+    if (this.productMode === 'new') {
+      this.newProductSizes[size] = (this.newProductSizes[size] || 0) + 1;
+    }
+  }
 
-        localStorage.clear();   // optional but recommended
-        this.router.navigate(['/signin']); // or '/signin'
+  decrease(size: string) {
+    if (this.productMode === 'existing' && this.selectedProduct?.quantityPerSize) {
+      if (this.selectedProduct.quantityPerSize[size] > 0)
+        this.selectedProduct.quantityPerSize[size]--;
     }
 
+    if (this.productMode === 'new' && this.newProductSizes[size] > 0) {
+      this.newProductSizes[size]--;
+    }
+  }
 
-    @HostListener('document:click')
-    clickOutside() {
-        this.isMenuOpen = false;
+  get totalQuantity(): number {
+    if (this.productMode === 'existing' && this.selectedProduct?.quantityPerSize) {
+      return Object.values(this.selectedProduct.quantityPerSize).reduce((a, b) => a + b, 0);
     }
 
-    /* ===== DATA (SAME SOURCE AS CATEGORY PAGE) ===== */
-
-    categories = ['Women', 'Men', 'Kids', 'Shoes', 'Accessories'];
-
-    clothingSizes = ['XS', 'S', 'M', 'L', 'XL'];
-    shoeSizes = ['6', '7', '8', '9', '10'];
-
-    products: StoreProduct[] = [
-        {
-            name: 'Crop Top',
-            category: 'Women',
-            price: 499,
-            image: 'assets/women.png',
-            quantityPerSize: { XS: 0, S: 0, M: 0, L: 0, XL: 0 }
-        },
-        {
-            name: 'Running Shoes',
-            category: 'Shoes',
-            price: 2499,
-            image: 'assets/shoes.png',
-            quantityPerSize: { '6': 0, '7': 0, '8': 0, '9': 0, '10': 0 }
-        }
-    ];
-
-    selectedCategory: string | null = null;
-    selectedStyle: string | null = null;
-
-    productMode: 'existing' | 'new' = 'existing';
-
-    selectedProduct: StoreProduct | null = null;
-
-    /* ===== NEW PRODUCT INPUTS ===== */
-    newProductName = '';
-    newProductPrice = 0;
-    newProductSizes: Record<string, number> = {};
-
-    /* ===== DROPDOWNS ===== */
-
-    get filteredProducts() {
-        return this.selectedCategory
-            ? this.products.filter(p => p.category === this.selectedCategory)
-            : [];
+    if (this.productMode === 'new') {
+      return Object.values(this.newProductSizes).reduce((a, b) => a + b, 0);
     }
 
-    get filteredStyles(): string[] {
-        return [...new Set(this.filteredProducts.map(p => p.name))];
+    return 0;
+  }
+get filteredStyles(): string[] {
+  return this.selectedCategory
+    ? [...new Set(
+        this.products
+          .filter(p => p.category === this.selectedCategory)
+          .map(p => p.name)
+      )]
+    : [];
+}
+addExistingToCart() {
+  if (!this.selectedProduct) return;
+
+  if (this.totalQuantity === 0 || this.totalPrice === 0) {
+    alert('Quantity must be greater than 0');
+    return;
+  }
+
+  this.cartService.addToCart({
+    name: this.selectedProduct.name,
+    image: this.selectedProduct.image,
+    totalQty: this.totalQuantity,
+    totalPrice: this.totalPrice
+  });
+
+  alert('Product added to cart!');
+}
+
+  get totalPrice(): number {
+    if (this.productMode === 'existing' && this.selectedProduct) {
+      return this.totalQuantity * this.selectedProduct.price;
     }
+    return 0;
+  }
 
-    get activeSizes(): string[] {
-        if (this.productMode === 'new') {
-            if (this.selectedCategory === 'Shoes') return this.shoeSizes;
-            if (this.selectedCategory === 'Accessories') return [];
-            return this.clothingSizes;
-        }
+  /* ---------------- IMAGE UPLOAD ---------------- */
 
-        if (!this.selectedProduct?.quantityPerSize) return [];
-        if (this.selectedProduct.category === 'Shoes') return this.shoeSizes;
-        if (this.selectedProduct.category === 'Accessories') return [];
-        return this.clothingSizes;
-    }
+  onImageUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
 
-    /* ===== QUANTITY ===== */
+    const file = input.files[0];
+    const reader = new FileReader();
 
-    increase(size: string) {
-        if (this.productMode === 'existing' && this.selectedProduct?.quantityPerSize) {
-            this.selectedProduct.quantityPerSize[size]++;
-        }
+    reader.onload = () => {
+      this.newProductImage = reader.result as string;
+    };
 
-        if (this.productMode === 'new') {
-            this.newProductSizes[size] = (this.newProductSizes[size] || 0) + 1;
-        }
-    }
-
-    decrease(size: string) {
-        if (
-            this.productMode === 'existing' &&
-            this.selectedProduct?.quantityPerSize &&
-            this.selectedProduct.quantityPerSize[size] > 0
-        ) {
-            this.selectedProduct.quantityPerSize[size]--;
-        }
-
-        if (this.productMode === 'new' && this.newProductSizes[size] > 0) {
-            this.newProductSizes[size]--;
-        }
-    }
-
-    get totalQuantity(): number {
-        if (this.productMode === 'existing' && this.selectedProduct?.quantityPerSize) {
-            return Object.values(this.selectedProduct.quantityPerSize).reduce((a, b) => a + b, 0);
-        }
-
-        if (this.productMode === 'new') {
-            return Object.values(this.newProductSizes).reduce((a, b) => a + b, 0);
-        }
-
-        return 0;
-    }
-
-    get cartItems() {
-        return this.cartService.getCart();
-    }
-
-    get lowStockProducts(): StoreProduct[] {
-        return this.products.filter(p =>
-            p.quantityPerSize &&
-            Object.values(p.quantityPerSize).some(q => q < 3)
-        );
-    }
-
-    get totalPrice(): number {
-        if (this.productMode === 'existing' && this.selectedProduct) {
-            return this.totalQuantity * this.selectedProduct.price;
-        }
-        return 0; // ❌ New product does not calculate selling price
-    }
-
-    /* ===== ACTIONS ===== */
-
-    addExistingToCart() {
-        if (!this.selectedProduct) return;
-
-        // ❗ NEW VALIDATION (ADDED)
-        if (this.totalQuantity === 0 || this.totalPrice === 0) {
-            alert('Quantity must be greater than 0 to add to cart');
-            return;
-        }
-
-        this.cartService.addToCart({
-            name: this.selectedProduct.name,
-            image: this.selectedProduct.image,
-            totalQty: this.totalQuantity,
-            totalPrice: this.totalPrice
-        });
-
-        alert('Product added to cart!');
-    }
-
-    addNewProduct() {
-        if (!this.selectedCategory || !this.newProductName || !this.newProductPrice) {
-            alert('Enter product name and price');
-            return;
-        }
+    reader.readAsDataURL(file);
+  }
+  // ---------------- LOW STOCK PANEL ----------------
+toggleLowStockPanel() {
+  this.showLowStockPanel = !this.showLowStockPanel;
+}
 
 
+  /* ---------------- ADD PRODUCT ---------------- */
 
+addNewProduct() {
+  if (!this.selectedCategory || !this.newProductName || !this.newProductPrice) {
+    alert('Fill all required fields');
+    return;
+  }
 
-        const newProduct: StoreProduct = {
-            name: this.newProductName,
-            category: this.selectedCategory,
-            price: this.newProductPrice,
-            image: 'assets/default-product.png',
-            quantityPerSize:
-                this.selectedCategory === 'Accessories'
-                    ? undefined
-                    : this.selectedCategory === 'Shoes'
-                        ? { '6': 0, '7': 0, '8': 0, '9': 0, '10': 0 }
-                        : { XS: 0, S: 0, M: 0, L: 0, XL: 0 }
-        };
+  const newProduct: StoreProduct = {
+    name: this.newProductName,
+    category: this.selectedCategory!,
+    price: this.newProductPrice,
+    image: this.newProductImage || 'assets/default-product.png',
+    quantityPerSize:
+      this.selectedCategory === 'Accessories'
+        ? undefined
+        : this.selectedCategory === 'Shoes'
+        ? { '6': 0, '7': 0, '8': 0, '9': 0, '10': 0 }
+        : { XS: 0, S: 0, M: 0, L: 0, XL: 0 }
+  };
 
-        this.products.push(newProduct);
+  // ✅ ADD TO PRODUCT LIST
+  this.products.push(newProduct);
 
-        alert('New product added to inventory');
+  // ✅ ADD TO CART
+  this.cartService.addToCart({
+    name: newProduct.name,
+    image: newProduct.image,
+    totalQty: this.totalQuantity,
+    totalPrice: this.newProductPrice * this.totalQuantity
+  });
 
-        // reset
-        this.productMode = 'existing';
-        this.newProductName = '';
-        this.newProductPrice = 0;
-        this.newProductSizes = {};
-    }
+  // ✅ RESET FORM
+  this.productMode = 'existing';
+  this.newProductName = '';
+  this.newProductPrice = 0;
+  this.newProductSizes = {};
+  this.newProductImage = null;
+
+  alert('Product added to cart successfully!');
+}
 }

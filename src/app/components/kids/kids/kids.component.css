@@ -340,3 +340,67 @@
 .sidebar.open ~ .content {
   margin-left: 300px;        /* 👈 content moves instead of hiding */
 }
+/* ===== THREE DOT MENU ===== */
+.name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-dots {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px;
+}
+
+.menu-popup {
+  position: absolute;
+  right: 20px;
+  margin-top: 6px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  z-index: 50;
+}
+
+.menu-popup button {
+  padding: 10px 14px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.menu-popup button:hover {
+  background: #f2f2f2;
+}
+
+/* ===== UPDATE MODAL ===== */
+.update-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.update-box {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  width: 300px;
+  text-align: center;
+}
+
+.update-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.update-actions .cancel {
+  background: #999;
+}

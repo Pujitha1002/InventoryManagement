@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { UpdatePriceComponent } from './components/update-price/update-price.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { WomenComponent } from './components/women/women/women.component';
@@ -26,7 +25,6 @@ export const routes: Routes = [
   { path: 'kids', component: KidsComponent },
   { path: 'shoes', component: ShoesComponent },
   { path: 'accessories', component: AccessoriesComponent },
-  { path: 'update-price', component: UpdatePriceComponent },
   { path: 'sold-products', component: SoldProductsComponent },
   { path: '**', redirectTo: 'signin' }
 ];

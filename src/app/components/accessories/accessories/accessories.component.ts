@@ -18,6 +18,9 @@ export class AccessoriesComponent {
   isMenuOpen = false;
   sidebarOpen = false;
   newStyle = '';
+  activeMenu: StoreProduct | null = null;
+  editingProduct: StoreProduct | null = null;
+  newPrice = 0;
   sizes: Size[] = ['XS', 'S', 'M', 'L', 'XL'];
   selectedSizeMap = new Map<StoreProduct, Size | null>();
   products: StoreProduct[] = [
@@ -91,8 +94,19 @@ export class AccessoriesComponent {
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
-  // @HostListener('document:click')
-  // clickOutside() {
-  //   this.isMenuOpen = false;
-  // }
+  openMenu(product: StoreProduct) {
+    this.activeMenu = this.activeMenu === product ? null : product;
+  }
+
+  openUpdatePrice(product: StoreProduct) {
+    this.editingProduct = product;
+    this.newPrice = product.price;
+    this.activeMenu = null;
+  }
+  updatePrice() {
+    if (!this.editingProduct || this.newPrice <= 0) return;
+
+    this.editingProduct.price = this.newPrice;
+    this.editingProduct = null;
+  }
 }

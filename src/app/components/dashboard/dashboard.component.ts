@@ -99,13 +99,13 @@ import { Router } from '@angular/router';
       width: 0;
       overflow: hidden;
       transition: width 0.35s ease;
-      // background: #ffffff;
+      
       box-shadow: 10px 0 30px rgba(0,0,0,0.1);
     }
 
     .sidebar.open {
       width: 260px;
-      // border-right-color: #e0e0e0;
+     
     }
 
     .sidebar-inner {
@@ -170,7 +170,6 @@ import { Router } from '@angular/router';
     }
 
     .cat-item {
-      // background: white;
       border: none;
       border-radius: 26px;
       padding: 28px;
@@ -207,12 +206,6 @@ import { Router } from '@angular/router';
         :host {
       display: block;
       height: 100vh;
-      // background: linear-gradient(
-      //   135deg,
-      //   #faf9f7 0%,
-      //   #f1ede7 50%,
-      //   #e6dfd5 100%
-      // );
     }
 
     @media (max-width: 900px) {
@@ -252,10 +245,6 @@ export class DashboardComponent implements OnInit {
     this.isMenuOpen = false;
   }
   logout() {
-    // optional: clear storage later if you want
-    // localStorage.clear();
-    // sessionStorage.clear();
-
     localStorage.clear();   // optional but recommended
     this.router.navigate(['/signin']); // or '/signin'
   }
@@ -266,11 +255,9 @@ export class DashboardComponent implements OnInit {
 
   addStyle() {
     if (!this.newStyle.trim()) return;
-
     this.styles.push(this.newStyle.trim());
     this.newStyle = '';
   }
-
 
   @HostListener('document:click')
   clickOutside() {

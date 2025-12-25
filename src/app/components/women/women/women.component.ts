@@ -121,11 +121,12 @@ export class WomenComponent {
   }
 
   updatePrice() {
-    if (!this.editingProduct) return;
+    if (!this.editingProduct || this.newPrice <= 0) return;
 
     this.editingProduct.price = this.newPrice;
     this.editingProduct = null;
   }
+
   toggleMenu(event: Event) {
     event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
@@ -136,7 +137,17 @@ export class WomenComponent {
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
+  openMenu(product: StoreProduct) {
+    this.activeMenu = this.activeMenu === product ? null : product;
+  }
 
+  openUpdatePrice(product: StoreProduct) {
+    this.editingProduct = product;
+    this.newPrice = product.price;
+    this.activeMenu = null;
+  }
+
+  activeMenu: StoreProduct | null = null;
   isMenuOpen = false;
   sidebarOpen = false;
   // 🔹 ADD STYLE FEATURE (ADDED)

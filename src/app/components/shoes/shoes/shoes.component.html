@@ -5,54 +5,115 @@
 </div>
 
 <div class="page-container">
+
+  <!-- SIDEBAR -->
   <aside class="sidebar" [class.open]="isMenuOpen">
     <button class="sidebar-item" [class.active]="selectedSidebarItem === null" (click)="selectSidebarItem(null)">
       All
     </button>
+
     <div *ngFor="let item of sidebarItems" class="sidebar-style-row">
       <button class="sidebar-item" [class.active]="selectedSidebarItem === item" (click)="selectSidebarItem(item)">
         {{ item }}
       </button>
     </div>
+
     <button class="sidebar-item add-style-btn" (click)="showAddStyle = !showAddStyle">
       + Add Style
     </button>
+
     <div *ngIf="showAddStyle" class="add-style-box">
       <input type="text" placeholder="Enter style name" [(ngModel)]="newStyle" />
       <button class="sidebar-item" (click)="addStyle()">Add</button>
     </div>
   </aside>
 
+  <!-- MAIN CONTENT -->
   <div class="content">
 
-
     <div class="cards-grid">
+
+      <!-- PRODUCT CARD -->
       <div class="product-card" *ngFor="let product of filteredProducts">
+
+        <!-- LOW STOCK -->
         <div class="low-stock" *ngIf="isLowStock(product)">Low Stock</div>
+
+        <!-- IMAGE -->
         <div class="image-box">{{ product.name }}</div>
 
+        <!-- INFO -->
         <div class="info">
-          <div class="name">{{ product.name }}</div>
+
+          <!-- NAME + MENU -->
+          <div class="name-row">
+            <span class="name">{{ product.name }}</span>
+
+            <span class="menu-dots" (click)="openMenu(product)">⋮</span>
+
+            <div class="menu-popup" *ngIf="activeMenu === product">
+              <button (click)="openUpdatePrice(product)">Update Price</button>
+            </div>
+          </div>
+
+          <!-- PRICE -->
           <div class="price-row">
             <span class="label">Price:</span>
             <span class="price">₹ {{ product.price }}</span>
           </div>
 
+          <!-- SIZE -->
           <div class="size-row">
             <span class="label">Size:</span>
             <div class="size-options">
-              <div class="size-circle" *ngFor="let size of sizes" [class.selected]="isSizeSelected(product,size)"
-                (click)="selectSize(product,size)">
+              <div class="size-circle" *ngFor="let size of sizes" [class.selected]="isSizeSelected(product, size)"
+                (click)="selectSize(product, size)">
                 {{ size }}
               </div>
             </div>
           </div>
 
+          <!-- QUANTITY -->
           <button class="add-cart-btn">
             Quantity: {{ getQuantity(product) }}
           </button>
+
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ================= UPDATE PRICE MODAL ================= -->
+<div class="update-modal" *ngIf="editingProduct">
+
+  <div class="update-box">
+
+    <h3>Update Price</h3>
+
+    <div class="image-box">
+      {{ editingProduct.name }}
+    </div>
+
+    <p>
+      <b>Selected Size:</b>
+      {{ selectedSizeMap.get(editingProduct) || 'All' }}
+    </p>
+
+    <p>
+      <b>Available Quantity:</b>
+      {{ getQuantity(editingProduct) }}
+    </p>
+
+    <label>New Price</label>
+    <input type="number" [(ngModel)]="newPrice" />
+
+    <div class="update-actions">
+      <button class="add-cart-btn" (click)="updatePrice()">Update</button>
+      <button class="add-cart-btn cancel" (click)="editingProduct = null">
+        Cancel
+      </button>
+    </div>
+
   </div>
 </div>
