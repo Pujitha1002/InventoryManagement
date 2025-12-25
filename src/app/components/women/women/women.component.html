@@ -1,54 +1,60 @@
 <!-- TOPBAR -->
 <div class="topbar">
   <button class="hamburger-btn" (click)="toggleMenu($event)">☰</button>
-  <h1 class="top-title">Women</h1>
+  <h1 class="top-title">{{ title }} ({{ headingCount }})</h1>
 </div>
 
 <div class="page-container">
 
   <!-- SIDEBAR -->
   <aside class="sidebar" [class.open]="isMenuOpen">
-    <button class="sidebar-item" [class.active]="selectedSidebarItem === null" (click)="selectSidebarItem(null)">
+
+    <button class="sidebar-item"
+            [class.active]="selectedStyleId === null"
+            (click)="loadAllProducts()">
       All
     </button>
 
-    <div *ngFor="let item of sidebarItems" class="sidebar-style-row">
-      <button class="sidebar-item" [class.active]="selectedSidebarItem === item" (click)="selectSidebarItem(item)">
-        {{ item }}
-      </button>
-    </div>
+    <button *ngFor="let item of sidebarItems"
+            class="sidebar-item"
+            [class.active]="selectedStyleId === item.styleId"
+            (click)="selectStyle(item)">
+      {{ item.name }}
+    </button>
 
-    <button class="sidebar-item add-style-btn" (click)="showAddStyle = !showAddStyle">
+    <button class="sidebar-item add-style-btn"
+            (click)="showAddStyle = !showAddStyle">
       + Add Style
     </button>
 
     <div *ngIf="showAddStyle" class="add-style-box">
-      <input type="text" placeholder="Enter style name" [(ngModel)]="newStyle" />
+      <input
+        type="text"
+        [(ngModel)]="newStyle"
+        placeholder="Enter style name" />
+
+      <!-- ✅ FIX: hook Add button -->
       <button class="sidebar-item" (click)="addStyle()">Add</button>
     </div>
+
   </aside>
 
   <!-- MAIN CONTENT -->
   <div class="content">
-
     <div class="cards-grid">
 
-      <!-- PRODUCT CARD -->
-      <div class="product-card" *ngFor="let product of filteredProducts">
+      <div class="product-card" *ngFor="let product of products">
 
-        <!-- LOW STOCK -->
         <div class="low-stock" *ngIf="isLowStock(product)">Low Stock</div>
 
-        <!-- IMAGE -->
-        <div class="image-box">{{ product.name }}</div>
+        <div class="image-box">
+          <img [src]="product.imageUrl" [alt]="product.productName" />
+        </div>
 
-        <!-- INFO -->
         <div class="info">
 
-          <!-- NAME + MENU -->
           <div class="name-row">
-            <span class="name">{{ product.name }}</span>
-
+            <span class="name">{{ product.productName }}</span>
             <span class="menu-dots" (click)="openMenu(product)">⋮</span>
 
             <div class="menu-popup" *ngIf="activeMenu === product">
@@ -56,54 +62,44 @@
             </div>
           </div>
 
-          <!-- PRICE -->
           <div class="price-row">
             <span class="label">Price:</span>
             <span class="price">₹ {{ product.price }}</span>
           </div>
 
-          <!-- SIZE -->
           <div class="size-row">
             <span class="label">Size:</span>
             <div class="size-options">
-              <div class="size-circle" *ngFor="let size of sizes" [class.selected]="isSizeSelected(product, size)"
-                (click)="selectSize(product, size)">
+              <div class="size-circle"
+                   *ngFor="let size of sizes"
+                   [class.selected]="isSizeSelected(product.productId, size)"
+                   (click)="selectSize(product.productId, size)">
                 {{ size }}
               </div>
             </div>
           </div>
 
-          <!-- QUANTITY -->
           <button class="add-cart-btn">
             Quantity: {{ getQuantity(product) }}
           </button>
 
         </div>
       </div>
+
     </div>
   </div>
 </div>
 
-<!-- ================= UPDATE PRICE MODAL ================= -->
+<!-- UPDATE PRICE MODAL -->
 <div class="update-modal" *ngIf="editingProduct">
-
   <div class="update-box">
 
     <h3>Update Price</h3>
 
     <div class="image-box">
-      {{ editingProduct.name }}
+      <img [src]="editingProduct.imageUrl"
+           [alt]="editingProduct.productName" />
     </div>
-
-    <p>
-      <b>Selected Size:</b>
-      {{ selectedSizeMap.get(editingProduct) || 'All' }}
-    </p>
-
-    <p>
-      <b>Available Quantity:</b>
-      {{ getQuantity(editingProduct) }}
-    </p>
 
     <label>New Price</label>
     <input type="number" [(ngModel)]="newPrice" />

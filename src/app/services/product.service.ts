@@ -1,31 +1,48 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { InventoryProduct } from '../models/inventory-product.model';
+import { Observable } from 'rxjs';
+import { ProductCard } from '../models/product-card.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ProductService {
 
-  products: InventoryProduct[] = [
-    {
-      productId: 1,
-      productName: 'Plain T-shirt',
-      categoryName: 'Men',
-      price: 499,
-      quantity: 20
-    },
-    {
-      productId: 2,
-      productName: 'Floral Dress',
-      categoryName: 'Women',
-      price: 1099,
-      quantity: 10
-    }
-  ];
+  private baseUrl = 'https://localhost:7210/api/Products';
 
-  getProducts() {
-    return this.products;
+  constructor(private http: HttpClient) {}
+
+  getProductsByCategory(categoryId: number) {
+    return this.http.get<{ count: number; products: ProductCard[] }>(
+      `${this.baseUrl}/category/${categoryId}`
+    );
   }
 
-  deleteProduct(productId: number) {
-    this.products = this.products.filter(p => p.productId !== productId);
+  getProductsByStyle(styleId: number) {
+    return this.http.get<{ count: number; products: ProductCard[] }>(
+      `${this.baseUrl}/style/${styleId}`
+    );
   }
+
+  // ✅ FIXED URL + field name
+  getStylesByCategory(categoryId: number) {
+    return this.http.get<{ styleId: number; name: string }[]>(
+      `${this.baseUrl}/styles/category/${categoryId}`
+    );
+  }
+
+  // ✅ FIXED URL
+  addStyle(data: { name: string; categoryId: number }) {
+    return this.http.post(
+      `${this.baseUrl}/styles`,
+      data
+    );
+  }
+  updateProductPrice(productId: number, newPrice: number) {
+    return this.http.put(
+      `${this.baseUrl}/${productId}/price`,
+      newPrice
+   );
+  }
+
 }
