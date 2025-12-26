@@ -1,6 +1,6 @@
 <div class="topbar">
-    <h1 class="title">Sold Products</h1>
-    <button class="top-btn" (click)="goBack()">⬅ Back</button>
+  <h1 class="title">Report</h1>
+  <button class="top-btn" (click)="goBack()">⬅ Back</button>
 </div>
 <div class="sold-wrapper">
   <div class="sold-grid">
@@ -21,11 +21,4 @@
   <div *ngIf="soldProducts.length === 0" class="empty-state">
     No products sold yet
   </div>
-</div>
-
-
-
-<!-- EMPTY STATE -->
-<div class="empty-state" *ngIf="soldProducts.length === 0">
-    No products sold yet
 </div>

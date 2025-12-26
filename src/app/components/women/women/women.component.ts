@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { StoreProduct, Size } from '../../../models/store-product.model';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProductService } from '../../../services/product.service';
 
 @Component({
   selector: 'app-women',
@@ -52,7 +53,7 @@ export class WomenComponent {
     { name: 'Winter Coat', category: 'Jackets', price: 2999, quantityPerSize: { XS: 3, S: 4, M: 3, L: 2, XL: 5 } },
     { name: 'Blazer Jacket', category: 'Jackets', price: 2199, quantityPerSize: { XS: 2, S: 3, M: 5, L: 4, XL: 3 } }
   ];
-  constructor(private router: Router) { }
+  constructor(private router: Router, private productService: ProductService) { }
 
   get filteredProducts() {
     return this.selectedSidebarItem
