@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreProduct, Size } from '../../../models/store-product.model';
 import { FormsModule } from '@angular/forms';
+<<<<<<< HEAD
 import { Router } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
+=======
+import { ProductService } from '../../../services/product.service';
+import { ProductCard } from '../../../models/product-card.model';
+>>>>>>> fc186d73f90128e525338518d02e7f943e429786
 
 @Component({
   selector: 'app-women',
@@ -12,18 +16,33 @@ import { ProductService } from '../../../services/product.service';
   templateUrl: './women.component.html',
   styleUrls: ['./women.component.css']
 })
-export class WomenComponent {
-  title = 'Women';
-  sidebarItems = ['Tops', 'Dresses', 'Jeans', 'Jackets'];
-  selectedSidebarItem: string | null = null;
+export class WomenComponent implements OnInit {
 
-  editingProduct: StoreProduct | null = null;
+  title = 'Women';
+  headingCount = 0;
+
+  sidebarItems: { styleId: number; name: string }[] = [];
+  newStyle = '';
+  showAddStyle = false;
+  selectedStyleId: number | null = null;
+
+  products: ProductCard[] = [];
+
+  sizes: string[] = ['XS', 'S', 'M', 'L', 'XL'];
+  selectedSizeMap = new Map<number, string>();
+
+  // menu & modal
+  activeMenu: ProductCard | null = null;
+  editingProduct: ProductCard | null = null;
   newPrice = 0;
 
-  sizes: Size[] = ['XS', 'S', 'M', 'L', 'XL'];
+  // sidebar
+  isMenuOpen = false;
+  
 
-  selectedSizeMap = new Map<StoreProduct, Size | null>();
+  constructor(private productService: ProductService) {}
 
+<<<<<<< HEAD
   products: StoreProduct[] = [
     // Tops (5)
     { name: 'Crop Top', category: 'Tops', price: 499, quantityPerSize: { XS: 3, S: 4, M: 5, L: 2, XL: 6 } },
@@ -59,100 +78,133 @@ export class WomenComponent {
     return this.selectedSidebarItem
       ? this.products.filter(p => p.category === this.selectedSidebarItem)
       : this.products;
+=======
+  ngOnInit(): void {
+    this.loadStyles();
+    this.loadAllProducts();
+>>>>>>> fc186d73f90128e525338518d02e7f943e429786
   }
 
-  selectSidebarItem(item: string | null) {
-    this.selectedSidebarItem = item;
+  // ================= SIDEBAR =================
+
+  loadStyles(): void {
+    this.productService.getStylesByCategory(1).subscribe(res => {
+      // ✅ FIX: map correct response shape
+      this.sidebarItems = res;
+    });
   }
 
-  selectSize(product: StoreProduct, size: Size) {
-    this.selectedSizeMap.set(product, size);
+  loadAllProducts(): void {
+    this.selectedStyleId = null;
+
+    this.productService.getProductsByCategory(1).subscribe((res: any) => {
+      // ✅ FIX: assign correctly
+      this.products = res.products.map((p: ProductCard) => ({
+        ...p,
+        imageUrl: `https://localhost:7210${p.imageUrl}`
+    }));
+      this.headingCount = res.products.length;
+      this.title = 'Women';
+    });
+  }
+  
+
+
+  selectStyle(style: { styleId: number; name: string }): void {
+  this.selectedStyleId = style.styleId;
+
+  this.productService.getProductsByStyle(style.styleId).subscribe((res: any) => {
+    this.products = res.products.map((p: ProductCard) => ({
+      ...p,
+      imageUrl: `https://localhost:7210${p.imageUrl}`
+    }));
+
+    this.headingCount = res.products.length;
+    this.title = style.name;
+  });
+}
+
+
+  // ================= SIZE & QUANTITY =================
+
+  selectSize(productId: number, size: string): void {
+    const current = this.selectedSizeMap.get(productId);
+    current === size
+      ? this.selectedSizeMap.delete(productId)
+      : this.selectedSizeMap.set(productId, size);
   }
 
-  isSizeSelected(product: StoreProduct, size: Size) {
-    return this.selectedSizeMap.get(product) === size;
+  isSizeSelected(productId: number, size: string): boolean {
+    return this.selectedSizeMap.get(productId) === size;
   }
 
-  getQuantity(product: StoreProduct) {
-    const selectedSize = this.selectedSizeMap.get(product);
+  getQuantity(product: ProductCard): number {
+    const selectedSize = this.selectedSizeMap.get(product.productId);
+
     if (selectedSize) {
-      return product.quantityPerSize[selectedSize];
-    } else {
-      // total quantity if no size selected
-      return Object.values(product.quantityPerSize).reduce((a, b) => a + b, 0);
-    }
-  }
-  // 🔹 ADD STYLE METHOD (ADDED)
-  addStyle() {
-    if (!this.newStyle.trim()) return;
-
-    // avoid duplicates
-    if (!this.sidebarItems.includes(this.newStyle.trim())) {
-      this.sidebarItems.push(this.newStyle.trim());
+      return product.sizes.find(s => s.size === selectedSize)?.quantity ?? 0;
     }
 
-    this.newStyle = '';
-    this.showAddStyle = false;
-  }
-  // 🔹 DELETE STYLE (ADDED)
-  deleteStyle(style: string) {
-    this.sidebarItems = this.sidebarItems.filter(item => item !== style);
-
-    // reset selection if deleted style was selected
-    if (this.selectedSidebarItem === style) {
-      this.selectedSidebarItem = null;
-    }
+    return product.sizes.reduce((t, s) => t + s.quantity, 0);
   }
 
-
-  isLowStock(product: StoreProduct) {
-    return Object.values(product.quantityPerSize).some(q => q < 3);
+  isLowStock(product: ProductCard): boolean {
+    return product.sizes.some(s => s.quantity < 3);
   }
 
-  logout() {
-    localStorage.clear(); // optional but good
-    this.router.navigate(['/signin']);
-  }
+  // ================= MENU & PRICE =================
 
-  removeProduct(product: StoreProduct) {
-    const confirmDelete = confirm(`Remove ${product.name}?`);
-    if (!confirmDelete) return;
-
-    this.products = this.products.filter(p => p !== product);
-  }
-
-  updatePrice() {
-    if (!this.editingProduct || this.newPrice <= 0) return;
-
-    this.editingProduct.price = this.newPrice;
-    this.editingProduct = null;
-  }
-
-  toggleMenu(event: Event) {
-    event.stopPropagation();
-    this.isMenuOpen = !this.isMenuOpen;
-  }
-  closeMenu() {
-    this.isMenuOpen = false;
-  }
-  toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen;
-  }
-  openMenu(product: StoreProduct) {
+  openMenu(product: ProductCard): void {
     this.activeMenu = this.activeMenu === product ? null : product;
   }
 
-  openUpdatePrice(product: StoreProduct) {
+  openUpdatePrice(product: ProductCard): void {
     this.editingProduct = product;
     this.newPrice = product.price;
     this.activeMenu = null;
   }
 
-  activeMenu: StoreProduct | null = null;
-  isMenuOpen = false;
-  sidebarOpen = false;
-  // 🔹 ADD STYLE FEATURE (ADDED)
-  showAddStyle = false;
-  newStyle = '';
+  updatePrice(): void {
+    if (!this.editingProduct || this.newPrice <= 0) return;
 
+    this.productService
+      .updateProductPrice(this.editingProduct.productId, this.newPrice)
+      .subscribe({
+        next: () => {
+        // update UI after backend success
+          this.editingProduct!.price = this.newPrice;
+          this.editingProduct = null;
+        },
+        error: () => {
+          alert('Failed to update price');
+        }
+      });
+  }
+
+
+  // ================= ADD STYLE =================
+
+  addStyle(): void {
+    if (!this.newStyle.trim()) return;
+    this.productService.addStyle({
+      name: this.newStyle.trim(),
+      categoryId: 1 // Women
+    }).subscribe({
+      next: () => {
+        this.newStyle = '';
+        this.showAddStyle = false;
+        this.loadStyles(); // refresh sidebar
+     },
+     error: err => {
+      alert(err.error || 'Style already exists');
+     }
+    });
+}
+
+  // ================= UI =================
+
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 }
